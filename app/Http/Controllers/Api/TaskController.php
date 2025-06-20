@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\TaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Response;
 
 class TaskController extends Controller
 {
@@ -43,25 +45,37 @@ class TaskController extends Controller
 
     /**
      * Display the specified resource.
+     * @throws \Throwable
      */
-    public function show(Task $task)
+    public function show(Task $task): JsonResource
     {
-        //
+        return $task->load(['children', 'labels'])->toResource();
     }
 
     /**
      * Update the specified resource in storage.
+     * @throws \Throwable
      */
-    public function update(Request $request, Task $task)
+    public function update(TaskRequest $request, Task $task): JsonResource
     {
-        //
+        $validated = $request->validated();
+
+        $task->update($request->safe()->except('labels'));
+
+        if (isset($validated['labels'])) {
+            $task->labels()->sync($validated['labels']);
+        }
+
+        return $task->load(['children', 'labels'])->toResource();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy(Task $task): Response
     {
-        //
+        $task->delete();
+
+        return response()->noContent();
     }
 }
