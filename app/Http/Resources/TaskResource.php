@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\TaskPriority;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -9,7 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property int $id
  * @property string $title
  * @property string|null $description
- * @property int $priority
+ * @property TaskPriority $priority
  * @property bool $is_completed
  * @property int $user_id
  * @property int|null $parent_id
@@ -24,6 +25,7 @@ class TaskResource extends JsonResource
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
+     * @throws \Exception
      */
     public function toArray(Request $request): array
     {
@@ -31,7 +33,7 @@ class TaskResource extends JsonResource
             'id'          => $this->id,
             'title'       => $this->title,
             'description' => $this->description,
-            'priority'    => $this->priority,
+            'priority'    => $this->priority->label(),
             'is_completed'=> $this->is_completed,
             'labels'      => LabelResource::collection($this->whenLoaded('labels')),
             'children'    => TaskResource::collection($this->whenLoaded('children')),

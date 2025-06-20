@@ -24,9 +24,9 @@ enum TaskPriority: int
     public function label(): string
     {
         return match ($this) {
-            self::LOW => 'Low',
-            self::HIGH => 'High',
-            self::MEDIUM => 'Medium',
+            self::LOW => 'low',
+            self::HIGH => 'high',
+            self::MEDIUM => 'medium',
             default => throw new \Exception('Unexpected match value'),
         };
     }
