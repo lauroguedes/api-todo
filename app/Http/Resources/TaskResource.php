@@ -33,7 +33,7 @@ class TaskResource extends JsonResource
             'description' => $this->description,
             'priority'    => $this->priority,
             'is_completed'=> $this->is_completed,
-            //'labels'      => LabelResource::collection($this->whenLoaded('labels')),
+            'labels'      => LabelResource::collection($this->whenLoaded('labels')),
             'children'    => TaskResource::collection($this->whenLoaded('children')),
             'updated_at'  => $this->updated_at->toDateTimeString(),
             'created_at'  => $this->created_at->toDateTimeString(),
