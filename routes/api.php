@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\LabelController;
 use App\Http\Controllers\Api\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -12,4 +13,7 @@ Route::middleware('auth:sanctum')
     ->name('api.')
     ->group(function () {
         Route::apiResource('/tasks', TaskController::class);
+    })
+    ->group(function () {
+        Route::apiResource('/labels', LabelController::class);
     });

@@ -22,7 +22,7 @@ class LabelResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'label' => $this->name,
         ];
     }
 }
