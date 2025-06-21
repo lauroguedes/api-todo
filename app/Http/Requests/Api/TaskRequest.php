@@ -24,12 +24,12 @@ class TaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'priority' => ['required', Rule::enum(TaskPriority::class)],
-            'parent_id' => ['nullable', 'exists:tasks,id'],
-            'is_completed' => ['boolean'],
-            'labels' => ['nullable', 'array'],
+            'title' => ['sometimes', 'required', 'string', 'max:255'],
+            'description' => ['sometimes', 'nullable', 'string'],
+            'priority' => ['sometimes', 'required', Rule::enum(TaskPriority::class)],
+            'parent_id' => ['sometimes', 'nullable', 'exists:tasks,id'],
+            'is_completed' => ['sometimes', 'boolean'],
+            'labels' => ['sometimes', 'nullable', 'array'],
             'labels.*' => ['exists:labels,id'],
         ];
     }

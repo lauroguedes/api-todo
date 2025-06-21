@@ -20,7 +20,9 @@ class TaskController extends Controller
        return $request->user()
             ->tasks()
             ->whereNull('parent_id')
-            ->with(['children', 'labels'])
+            ->with(['children.children', 'labels'])
+            ->orderBy('priority')
+            ->orderBy('created_at', 'desc')
             ->get()
             ->toResourceCollection();
     }
@@ -40,7 +42,7 @@ class TaskController extends Controller
             $task->labels()->attach($validated['labels']);
         }
 
-        return $task->load(['children', 'labels'])->toResource();
+        return $task->load(['children.children', 'labels'])->toResource();
     }
 
     /**
@@ -49,7 +51,7 @@ class TaskController extends Controller
      */
     public function show(Task $task): JsonResource
     {
-        return $task->load(['children', 'labels'])->toResource();
+        return $task->load(['children.children', 'labels'])->toResource();
     }
 
     /**
@@ -66,7 +68,7 @@ class TaskController extends Controller
             $task->labels()->sync($validated['labels']);
         }
 
-        return $task->load(['children', 'labels'])->toResource();
+        return $task->load(['children.children', 'labels'])->toResource();
     }
 
     /**

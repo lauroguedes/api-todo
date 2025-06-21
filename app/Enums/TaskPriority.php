@@ -4,9 +4,9 @@ namespace App\Enums;
 
 enum TaskPriority: int
 {
-    case LOW = 1;
+    case HIGH = 1;
     case MEDIUM = 2;
-    case HIGH = 3;
+    case LOW = 3;
 
     public static function fromLabel(string $label): ?self
     {
