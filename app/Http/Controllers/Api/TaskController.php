@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\TaskOperationException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\TaskRequest;
 use App\Models\Task;
@@ -18,34 +19,33 @@ class TaskController extends Controller
      */
     public function index(Request $request): ResourceCollection
     {
-//       return $request->user()
-//            ->tasks()
-//            ->whereNull('parent_id')
-//            ->with(['children.children', 'labels'])
-//            ->orderBy('priority')
-//            ->orderBy('created_at', 'desc')
-//            ->get()
-//            ->toResourceCollection();
-
-        return Task::withRecursiveExpression()->toResourceCollection();
+        return Task::withRecursiveExpression()
+            ->toResourceCollection();
     }
 
     /**
      * Store a newly created resource in storage.
+     * @throws TaskOperationException
      */
     public function store(TaskRequest $request)
     {
-        $validated = $request->validated();
+        try {
+            $validated = $request->validated();
 
-        $task = $request->user()
-            ->tasks()
-            ->create($request->safe()->except('labels'));;
+            $task = $request->user()
+                ->tasks()
+                ->create($request->safe()->except('labels'));;
 
-        if (!empty($validated['labels'])) {
-            $task->labels()->attach($validated['labels']);
+            if (!empty($validated['labels'])) {
+                $task->labels()->attach($validated['labelssss']);
+            }
+
+            return Task::withRecursiveExpression($task->id)
+                ->firstOrFail()
+                ->toResource();
+        } catch (\Throwable $th) {
+            throw new TaskOperationException(previous: $th);
         }
-
-        return $task->load(['children.children', 'labels'])->toResource();
     }
 
     /**
@@ -54,7 +54,9 @@ class TaskController extends Controller
      */
     public function show(Task $task): JsonResource
     {
-        return $task->load(['children.children', 'labels'])->toResource();
+        return Task::withRecursiveExpression($task->id)
+            ->firstOrFail()
+            ->toResource();
     }
 
     /**
@@ -71,7 +73,9 @@ class TaskController extends Controller
             $task->labels()->sync($validated['labels']);
         }
 
-        return $task->load(['children.children', 'labels'])->toResource();
+        return Task::withRecursiveExpression($task->id)
+            ->firstOrFail()
+            ->toResource();
     }
 
     /**
