@@ -14,17 +14,20 @@ class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * @throws \Throwable
      */
     public function index(Request $request): ResourceCollection
     {
-       return $request->user()
-            ->tasks()
-            ->whereNull('parent_id')
-            ->with(['children.children', 'labels'])
-            ->orderBy('priority')
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->toResourceCollection();
+//       return $request->user()
+//            ->tasks()
+//            ->whereNull('parent_id')
+//            ->with(['children.children', 'labels'])
+//            ->orderBy('priority')
+//            ->orderBy('created_at', 'desc')
+//            ->get()
+//            ->toResourceCollection();
+
+        return Task::withRecursiveExpression()->toResourceCollection();
     }
 
     /**
