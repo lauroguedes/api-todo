@@ -37,7 +37,7 @@ class TaskController extends Controller
                 ->create($request->safe()->except('labels'));;
 
             if (!empty($validated['labels'])) {
-                $task->labels()->attach($validated['labelssss']);
+                $task->labels()->attach($validated['labels']);
             }
 
             return Task::withRecursiveExpression($task->id)
@@ -65,17 +65,21 @@ class TaskController extends Controller
      */
     public function update(TaskRequest $request, Task $task): JsonResource
     {
-        $validated = $request->validated();
+        try {
+            $validated = $request->validated();
 
-        $task->update($request->safe()->except('labels'));
+            $task->update($request->safe()->except('labels'));
 
-        if (isset($validated['labels'])) {
-            $task->labels()->sync($validated['labels']);
+            if (isset($validated['labels'])) {
+                $task->labels()->sync($validated['labels']);
+            }
+
+            return Task::withRecursiveExpression($task->id)
+                ->firstOrFail()
+                ->toResource();
+        } catch (\Throwable $th) {
+            throw new TaskOperationException(previous: $th);
         }
-
-        return Task::withRecursiveExpression($task->id)
-            ->firstOrFail()
-            ->toResource();
     }
 
     /**
