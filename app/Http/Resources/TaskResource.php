@@ -32,13 +32,13 @@ class TaskResource extends JsonResource
         return [
             'id'          => $this->id,
             'title'       => $this->title,
+            'parent_id'   => $this->parent_id,
             'description' => $this->description,
             'priority'    => $this->priority->label(),
             'is_completed'=> $this->is_completed,
-            'labels'      => LabelResource::collection($this->whenLoaded('labels')),
+            'labels' => LabelResource::collection($this->labels),
             'children' => $this->children ?? [],
-            'updated_at' => $this->updated_at->toDateTimeString(),
-            'created_at'  => $this->created_at->toDateTimeString(),
+            'created_at' => $this->created_at->diffForHumans(),
         ];
     }
 }

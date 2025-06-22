@@ -18,25 +18,31 @@ class Task extends Model
     /** @use HasFactory<\Database\Factories\TaskFactory> */
     use HasFactory;
 
-    public static function withRecursiveExpression(): Collection
+    public static function withRecursiveExpression(int $taskId = null): Collection
     {
         $userId = auth()->id();
 
+        $rootQuery = \DB::table('tasks')
+            ->select('id', 'title', 'description', 'priority', 'is_completed', 'parent_id', 'user_id', 'created_at')
+            ->where('user_id', $userId);
+
+        $taskId
+            ? $rootQuery->where('id', $taskId)
+            : $rootQuery->whereNull('parent_id');
+
         $rows = \DB::select("
             WITH RECURSIVE task_tree AS (
-                SELECT id, title, description, priority, is_completed, parent_id, user_id, created_at, updated_at
-                FROM tasks
-                WHERE parent_id IS NULL AND user_id = ?
+                {$rootQuery->toSql()}
 
                 UNION ALL
 
-                SELECT t.id, t.title, t.description, t.priority, t.is_completed, t.parent_id, t.user_id, t.created_at, t.updated_at
+                SELECT t.id, t.title, t.description, t.priority, t.is_completed, t.parent_id, t.user_id, t.created_at
                 FROM tasks t
                 INNER JOIN task_tree tt ON t.parent_id = tt.id
                 WHERE t.user_id = ?
             )
-            SELECT * FROM task_tree
-        ", [$userId, $userId]);
+            SELECT * FROM task_tree order by priority
+        ", array_merge($rootQuery->getBindings(), [$userId]));
 
         $tasks = collect($rows)
             ->map(fn ($row) => new self((array) $row));
