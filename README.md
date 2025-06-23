@@ -6,6 +6,32 @@ A RESTful API for managing hierarchical task lists, built with Laravel as a tech
 
 This project implements a task management system with support for hierarchical (parent-child) task relationships. It allows users to create, read, update, and delete tasks through a RESTful API interface. Each task can have multiple subtasks, creating a tree-like structure for organizing work.
 
+### Done
+
+✅ Server-Side Framework: Use a suitable framework (e.g., Laravel, Django) for data management.
+
+✅ API Endpoints: Develop RESTful APIs to support CRUD operations for tasks.
+
+✅ Data Storage: Implement a robust database (e.g., MySQL, PostgreSQL).
+
+✅ Recursive Task Hierarchy: Support parent-child task relationships using Common Table Expressions (CTEs) or recursive
+SQL functions.
+
+✅ Authentication (Optional): Bonus points for implementing user authentication to support multiple users with separate
+to-do lists.
+
+### Extras
+
+- Feature and unit tests
+- Validations
+- Exceptions
+
+### Todo
+
+- API Documentation
+- Label manager
+- User manager
+
 ## Technologies Used
 
 - **Framework**: Laravel 12
@@ -78,35 +104,10 @@ frontend project to avoid CORS errors.
 - `DELETE /api/tasks/{id}` - Delete a task
 
 ## Users for test
+
 user: test@user.com
 pw: secret
 
 user: test2@user.com
 pw: secret
-
-## Done
-
-✅ Server-Side Framework: Use a suitable framework (e.g., Laravel, Django) for data management.
-
-✅ API Endpoints: Develop RESTful APIs to support CRUD operations for tasks.
-
-✅ Data Storage: Implement a robust database (e.g., MySQL, PostgreSQL).
-
-✅ Recursive Task Hierarchy: Support parent-child task relationships using Common Table Expressions (CTEs) or recursive
-SQL functions.
-
-✅ Authentication (Optional): Bonus points for implementing user authentication to support multiple users with separate
-to-do lists.
-
-## Extras
-
-- Feature and unit tests
-- Validations
-- Exceptions
-
-## Todo
-
-[ ] API Documentation
-[ ] Label manager
-[ ] User manager
 
