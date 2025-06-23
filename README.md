@@ -1,61 +1,112 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Task Management API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A RESTful API for managing hierarchical task lists, built with Laravel as a technical back-end test implementation.
 
-## About Laravel
+## Project Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This project implements a task management system with support for hierarchical (parent-child) task relationships. It allows users to create, read, update, and delete tasks through a RESTful API interface. Each task can have multiple subtasks, creating a tree-like structure for organizing work.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Technologies Used
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Framework**: Laravel 12
+- **Database**: SQLite (supports both MySql and Postgres)
+- **Authentication**: Laravel Sanctum for API cookie authentication
 
-## Learning Laravel
+### Key Packages
+- Laravel Sanctum for API authentication
+- [Pest](https://pestphp.com/)
+- [Laradumps](https://laradumps.dev/)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Architecture Overview
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+The application follows Laravel's MVC architecture with:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Models**: Represent database entities (User, Task, Labels)
+- **Controllers**: Handle API requests and responses
+- **Resources**: Transform model data for API responses
+- **Requests**: Validate incoming data
 
-## Laravel Sponsors
+## Key Features
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### RESTful API for CRUD Operations
 
-### Premium Partners
+The API provides endpoints for:
+- Listing all tasks (with their hierarchical structure)
+- Creating new tasks
+- Viewing specific tasks
+- Updating existing tasks
+- Deleting tasks
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Recursive Task Hierarchy
 
-## Contributing
+Tasks can have parent-child relationships, creating a hierarchical structure:
+- Implemented using self-referencing foreign keys in the database
+- Queried efficiently using Common Table Expressions (CTEs) for recursive SQL
+- Presented as a nested tree structure in API responses
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Task Prioritization
 
-## Code of Conduct
+Tasks can be assigned priority levels, implemented using TaskPriority enum:
+- HIGH
+- MEDIUM
+- LOW
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### User Authentication
 
-## Security Vulnerabilities
+- Users can register and authenticate to manage their own task lists
+- API endpoints are protected with csrf token authentication
+- Each user can only access their own tasks
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Getting Started
 
-## License
+1. Clone the repository
+2. Install dependencies: `composer install`
+3. Configure your database in `cp .env.example .env`
+4. Run migrations and seeds: `php artisan migrate --seed`
+5. Serve the application: `php artisan serve`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Note**: The API uses `api.todo.test` as the main domain. If you need to change this, you should also update it in the
+frontend project to avoid CORS errors.
+
+## API Endpoints
+
+- `GET /api/users` - Get auth user
+- `GET /api/tasks` - List all tasks
+- `POST /api/tasks` - Create a new task
+- `GET /api/tasks/{id}` - View a specific task
+- `PUT/PATCH /api/tasks/{id}` - Update a task
+- `DELETE /api/tasks/{id}` - Delete a task
+
+## Users for test
+user: test@user.com
+pw: secret
+
+user: test2@user.com
+pw: secret
+
+## Done
+
+✅ Server-Side Framework: Use a suitable framework (e.g., Laravel, Django) for data management.
+
+✅ API Endpoints: Develop RESTful APIs to support CRUD operations for tasks.
+
+✅ Data Storage: Implement a robust database (e.g., MySQL, PostgreSQL).
+
+✅ Recursive Task Hierarchy: Support parent-child task relationships using Common Table Expressions (CTEs) or recursive
+SQL functions.
+
+✅ Authentication (Optional): Bonus points for implementing user authentication to support multiple users with separate
+to-do lists.
+
+## Extras
+
+- Feature and unit tests
+- Validations
+- Exceptions
+
+## Todo
+
+[ ] API Documentation
+[ ] Label manager
+[ ] User manager
+
