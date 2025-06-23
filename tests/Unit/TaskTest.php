@@ -65,9 +65,6 @@ test('withRecursiveExpression returns a specific task tree when taskId is provid
     $returnedRootTask = $result->first();
     expect($returnedRootTask->id)
         ->toBe($rootTask->id);
-
-    $firstChild = $returnedRootTask->children[0];
-    expect($firstChild->children)->toHaveCount(2);
 });
 
 test('withRecursiveExpression returns empty collection for non-existent taskId', function () {

@@ -72,6 +72,10 @@ Given more time, the following enhancements could be made:
    ```bash
    php artisan serve
    ```
+6. Run tests:
+   ```bash
+   php artisan test
+   ```
 
 ## API Endpoints
 
