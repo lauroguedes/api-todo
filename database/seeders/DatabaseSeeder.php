@@ -20,25 +20,51 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@user.com',
         ]);
 
+        $user2 = User::factory()->create([
+            'name' => 'Test User 2',
+            'email' => 'test2@user.com',
+        ]);
+
         $labels = Label::factory(5)->create();
 
-        Task::factory(10)->create([
-            'user_id' => $user->id
-        ])->each(function ($task) use ($labels) {
-            $childrenCount = rand(2, 3);
+        Task::factory(5)
+            ->for($user)
+            ->create()
+            ->each(function ($task) use ($labels) {
+                $childrenCount = rand(2, 3);
 
-            Task::factory($childrenCount)->create([
-                'user_id' => $task->user_id,
-                'parent_id' => $task->id
-            ])->each(function ($childTask) use ($labels) {
-                $childTask->labels()->attach(
+                Task::factory($childrenCount)->create([
+                    'user_id' => $task->user_id,
+                    'parent_id' => $task->id
+                ])->each(function ($childTask) use ($labels) {
+                    $childTask->labels()->attach(
+                        $labels->random(rand(1, 3))->pluck('id')->toArray()
+                    );
+                });
+
+                $task->labels()->attach(
                     $labels->random(rand(1, 3))->pluck('id')->toArray()
                 );
             });
 
-            $task->labels()->attach(
-                $labels->random(rand(1, 3))->pluck('id')->toArray()
-            );
-        });
+        Task::factory(5)
+            ->for($user2)
+            ->create()
+            ->each(function ($task) use ($labels) {
+                $childrenCount = rand(2, 3);
+
+                Task::factory($childrenCount)->create([
+                    'user_id' => $task->user_id,
+                    'parent_id' => $task->id
+                ])->each(function ($childTask) use ($labels) {
+                    $childTask->labels()->attach(
+                        $labels->random(rand(1, 3))->pluck('id')->toArray()
+                    );
+                });
+
+                $task->labels()->attach(
+                    $labels->random(rand(1, 3))->pluck('id')->toArray()
+                );
+            });
     }
 }
