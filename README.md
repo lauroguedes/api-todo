@@ -1,113 +1,95 @@
-# Task Management API
+# ToDo API – Laravel Back-End Assessment
 
-A RESTful API for managing hierarchical task lists, built with Laravel as a technical back-end test implementation.
+This project is the back-end portion of a technical assessment for a Software Engineer position. It demonstrates proficiency in building a robust, scalable, and maintainable RESTful API for managing hierarchical task lists using Laravel.
 
-## Project Overview
+## Project Purpose
 
-This project implements a task management system with support for hierarchical (parent-child) task relationships. It allows users to create, read, update, and delete tasks through a RESTful API interface. Each task can have multiple subtasks, creating a tree-like structure for organizing work.
+This repository implements a RESTful API for a Todo application as part of a technical assessment. The focus is on backend architecture, data management, and efficient handling of hierarchical task relationships.
 
-### Done
+## What Was Implemented
 
-✅ Server-Side Framework: Use a suitable framework (e.g., Laravel, Django) for data management.
+### Main Features & Components:
 
-✅ API Endpoints: Develop RESTful APIs to support CRUD operations for tasks.
+#### RESTful API Endpoints:
+- CRUD operations for tasks (create, read, update, delete).
+- Listing all tasks, including their hierarchical structure.
 
-✅ Data Storage: Implement a robust database (e.g., MySQL, PostgreSQL).
+#### Recursive Task Hierarchy:
+- Support for parent-child task relationships using self-referencing foreign keys.
+- Efficient querying with Common Table Expressions (CTEs) for recursive SQL.
+- API responses present tasks as a nested tree structure.
 
-✅ Recursive Task Hierarchy: Support parent-child task relationships using Common Table Expressions (CTEs) or recursive
-SQL functions.
+#### Authentication:
+- User registration and authentication using Laravel Sanctum.
+- API endpoints protected with CSRF token authentication.
+- Each user can only access and manage their own tasks.
 
-✅ Authentication (Optional): Bonus points for implementing user authentication to support multiple users with separate
-to-do lists.
+#### Task Prioritization:
+- Tasks can be assigned priority levels (High, Medium, Low) using a TaskPriority enum.
 
-### Extras
+#### Data Management:
+- Robust database implementation (SQLite for development, supports MySQL/PostgreSQL).
+- Validations for incoming data.
+- Exception handling.
 
-- Feature and unit tests
-- Validations
-- Exceptions
+#### Architecture & Technologies:
+- Built with Laravel 12.
+- Follows Laravel's MVC architecture (Models, Controllers, Resources, Requests).
+- Key packages: Laravel Sanctum, Pest (for testing), Laradumps.
 
-### Todo
+## Areas for Improvement
 
-- API Documentation
-- Label manager
-- User manager
+Given more time, the following enhancements could be made:
 
-## Technologies Used
+- **API Documentation:** Generate comprehensive API documentation (e.g., using Swagger/OpenAPI).
+- **Label Manager:** Implement full CRUD operations and management for task labels.
+- **User Manager:** Develop more extensive user profile management features.
+- **Performance Optimization:** Optimize database queries for very large datasets and consider caching strategies.
+- **Error Handling:** Refine error responses for specific scenarios.
+- **Security:** Conduct a full security audit and implement additional measures if necessary.
+- **Code Quality:** Further refactor code for modularity and add more comprehensive type hinting.
 
-- **Framework**: Laravel 12
-- **Database**: SQLite (supports both MySql and Postgres)
-- **Authentication**: Laravel Sanctum for API cookie authentication
+**Note:** The API uses `api.todo.test` as the main domain. If you need to change this, you should also update it in the frontend project to avoid CORS errors.
 
-### Key Packages
-- Laravel Sanctum for API authentication
-- [Pest](https://pestphp.com/)
-- [Laradumps](https://laradumps.dev/)
+**Frontend Repository:** https://github.com/lauroguedes/todo
 
-## Architecture Overview
+## Setup
 
-The application follows Laravel's MVC architecture with:
-
-- **Models**: Represent database entities (User, Task, Labels)
-- **Controllers**: Handle API requests and responses
-- **Resources**: Transform model data for API responses
-- **Requests**: Validate incoming data
-
-## Key Features
-
-### RESTful API for CRUD Operations
-
-The API provides endpoints for:
-- Listing all tasks (with their hierarchical structure)
-- Creating new tasks
-- Viewing specific tasks
-- Updating existing tasks
-- Deleting tasks
-
-### Recursive Task Hierarchy
-
-Tasks can have parent-child relationships, creating a hierarchical structure:
-- Implemented using self-referencing foreign keys in the database
-- Queried efficiently using Common Table Expressions (CTEs) for recursive SQL
-- Presented as a nested tree structure in API responses
-
-### Task Prioritization
-
-Tasks can be assigned priority levels, implemented using TaskPriority enum:
-- HIGH
-- MEDIUM
-- LOW
-
-### User Authentication
-
-- Users can register and authenticate to manage their own task lists
-- API endpoints are protected with csrf token authentication
-- Each user can only access their own tasks
-
-## Getting Started
-
-1. Clone the repository
-2. Install dependencies: `composer install`
-3. Configure your database in `cp .env.example .env`
-4. Run migrations and seeds: `php artisan migrate --seed`
-5. Serve the application: `php artisan serve`
-
-**Note**: The API uses `api.todo.test` as the main domain. If you need to change this, you should also update it in the
-frontend project to avoid CORS errors.
+1. Clone the repository.
+2. Install dependencies:
+   ```bash
+   composer install
+   ```
+3. Configure env:
+   ```bash
+   cp .env.example .env
+   ```
+4. Run migrations and seed the database:
+   ```bash
+   php artisan migrate --seed
+   ```
+5. Serve the application:
+   ```bash
+   php artisan serve
+   ```
 
 ## API Endpoints
 
-- `GET /api/users` - Get auth user
-- `GET /api/tasks` - List all tasks
+- `GET /api/users` - Get authenticated user details
+- `GET /api/tasks` - List all tasks (with hierarchical structure)
 - `POST /api/tasks` - Create a new task
 - `GET /api/tasks/{id}` - View a specific task
-- `PUT/PATCH /api/tasks/{id}` - Update a task
+- `PUT/PATCH /api/tasks/{id}` - Update an existing task
 - `DELETE /api/tasks/{id}` - Delete a task
 
-## Users for test
+## Users for Test
 
-user: test@user.com
-pw: secret
+You can use the following credentials for testing:
 
-user: test2@user.com
-pw: secret
+**User 1:**
+- Email: `test@user.com`
+- Password: `secret`
 
+**User 2:**
+- Email: `test2@user.com`
+- Password: `secret`
