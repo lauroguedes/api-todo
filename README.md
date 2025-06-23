@@ -54,26 +54,59 @@ Tasks can be assigned priority levels, implemented using TaskPriority enum:
 ### User Authentication
 
 - Users can register and authenticate to manage their own task lists
-- API endpoints are protected with csfr token authentication
+- API endpoints are protected with csrf token authentication
 - Each user can only access their own tasks
 
 ## Getting Started
 
 1. Clone the repository
 2. Install dependencies: `composer install`
-3. Configure your database in `.env`
-4. Run migrations: `php artisan migrate --seed`
+3. Configure your database in `cp .env.example .env`
+4. Run migrations and seeds: `php artisan migrate --seed`
 5. Serve the application: `php artisan serve`
+
+**Note**: The API uses `api.todo.test` as the main domain. If you need to change this, you should also update it in the
+frontend project to avoid CORS errors.
 
 ## API Endpoints
 
+- `GET /api/users` - Get auth user
 - `GET /api/tasks` - List all tasks
 - `POST /api/tasks` - Create a new task
 - `GET /api/tasks/{id}` - View a specific task
 - `PUT/PATCH /api/tasks/{id}` - Update a task
 - `DELETE /api/tasks/{id}` - Delete a task
 
-## Users to test
-user: test@user.com, pw: secret
-user: test2@user.com, pw: secret
+## Users for test
+user: test@user.com
+pw: secret
+
+user: test2@user.com
+pw: secret
+
+## Done
+
+✅ Server-Side Framework: Use a suitable framework (e.g., Laravel, Django) for data management.
+
+✅ API Endpoints: Develop RESTful APIs to support CRUD operations for tasks.
+
+✅ Data Storage: Implement a robust database (e.g., MySQL, PostgreSQL).
+
+✅ Recursive Task Hierarchy: Support parent-child task relationships using Common Table Expressions (CTEs) or recursive
+SQL functions.
+
+✅ Authentication (Optional): Bonus points for implementing user authentication to support multiple users with separate
+to-do lists.
+
+## Extras
+
+- Feature and unit tests
+- Validations
+- Exceptions
+
+## Todo
+
+[ ] API Documentation
+[ ] Label manager
+[ ] User manager
 
